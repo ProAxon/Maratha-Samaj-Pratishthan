@@ -12,7 +12,7 @@ export default function About() {
             <div className="ul-about-imgs">
               <div className="img-wrapper img-container">
                 <Image 
-                  src="/assets/img/about-img.png" 
+                  src="/assets/img/maratha.jpg" 
                   alt="Image"
                   width={500}
                   height={500}
@@ -59,7 +59,7 @@ export default function About() {
                     <li>सशक्तीकरण - ज्ञान आणि संधींच्या आधारे विकास</li>
                   </ul>
                 </div>
-                <div className="block-right">
+                {/* <div className="block-right">
                   <Image 
                     src="/assets/img/about-block-img.jpg" 
                     alt="Image"
@@ -67,7 +67,7 @@ export default function About() {
                     height={150}
                     className="img-responsive"
                   />
-                </div>
+                </div> */}
               </div>
 
               <div className="ul-about-bottom">

@@ -96,55 +96,7 @@ export default function Footer() {
               </div>
             </div>
 
-            <div className="ul-footer-widget ul-footer-recent-posts">
-              <h3 className="ul-footer-widget-title">Recent Posts</h3>
-              <div className="ul-blog-sidebar-posts">
-                {/* single post */}
-                <div className="ul-blog-sidebar-post ul-footer-post">
-                  <div className="img">
-                    <Image 
-                      src="/assets/img/blog-2.jpg" 
-                      alt="Post Image"
-                      width={60}
-                      height={60}
-                      className="img-responsive"
-                    />
-                  </div>
-                  <div className="txt">
-                    <span className="date">
-                      <span className="icon"><i className="flaticon-calendar"></i></span>
-                      <span>May 12, 2025</span>
-                    </span>
-                    <h4 className="title">
-                      <Link href="/blog-details">There are many vario ns of passages of</Link>
-                    </h4>
-                  </div>
-                </div>
-
-                {/* single post */}
-                <div className="ul-blog-sidebar-post ul-footer-post">
-                  <div className="img">
-                    <Image 
-                      src="/assets/img/blog-1.jpg" 
-                      alt="Post Image"
-                      width={60}
-                      height={60}
-                      className="img-responsive"
-                    />
-                  </div>
-                  <div className="txt">
-                    <span className="date">
-                      <span className="icon"><i className="flaticon-calendar"></i></span>
-                      <span>May 12, 2025</span>
-                    </span>
-                    <h4 className="title">
-                      <Link href="/blog-details">There are many vario ns of passages of</Link>
-                    </h4>
-                  </div>
-                </div>
-              </div>
-            </div>
-
+           
             <div className="ul-footer-widget ul-nwsltr-widget">
               <h3 className="ul-footer-widget-title">Contact Us</h3>
               <div className="ul-footer-widget-links ul-footer-contact-links">

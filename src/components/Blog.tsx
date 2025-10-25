@@ -7,7 +7,7 @@ export default function Blog() {
   const blogs = [
     {
       id: 1,
-      image: '/assets/img/blog-1.jpg',
+      image: '/assets/img/donation-1.jpg',
       date: '15',
       month: 'डिसेंबर',
       author: 'संपादक',
@@ -15,26 +15,7 @@ export default function Blog() {
       title: 'शिक्षण हे सर्वोत्तम भेट - मराठा युवकांसाठी संधी',
       link: '/blog-details'
     },
-    {
-      id: 2,
-      image: '/assets/img/blog-2.jpg',
-      date: '10',
-      month: 'डिसेंबर',
-      author: 'संपादक',
-      category: 'उद्योजकता',
-      title: 'उद्योजकता विकास - नवीन संधी आणि आव्हाने',
-      link: '/blog-details'
-    },
-    {
-      id: 3,
-      image: '/assets/img/blog-3.jpg',
-      date: '05',
-      month: 'डिसेंबर',
-      author: 'संपादक',
-      category: 'संस्कृती',
-      title: 'मराठा संस्कृती आणि परंपरा जपण्याचे महत्त्व',
-      link: '/blog-details'
-    }
+
   ];
 
   return (

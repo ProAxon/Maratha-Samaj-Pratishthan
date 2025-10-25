@@ -13,19 +13,19 @@ export default function Team() {
     },
     {
       id: 2,
-      image: '/assets/img/member-2.jpg',
+      image: '/assets/img/member-1.jpg',
       name: 'श्रीमती सुनीता देशमुख',
       designation: 'उपाध्यक्ष'
     },
     {
       id: 3,
-      image: '/assets/img/member-3.jpg',
+      image: '/assets/img/member-1.jpg',
       name: 'श्री विजय जाधव',
       designation: 'सचिव'
     },
     {
       id: 4,
-      image: '/assets/img/member-4.jpg',
+      image: '/assets/img/member-1.jpg',
       name: 'डॉ. प्रिया शर्मा',
       designation: 'कोषाध्यक्ष'
     }

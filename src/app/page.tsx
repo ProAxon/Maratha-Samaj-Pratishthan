@@ -26,7 +26,7 @@ export default function Home() {
       <Team />
       <Testimonial />
       <Blog />
-      <Gallery />
+      {/* <Gallery /> */}
     </Layout>
   );
 }

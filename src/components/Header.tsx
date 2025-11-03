@@ -14,14 +14,13 @@ export default function Header() {
         <div className="ul-header-bottom-wrapper ul-header-container">
           <div className="logo-container">
             <Link href="/" className="d-inline-block">
-              {/* <Image 
-                src="/assets/img/logo.svg" 
+              <Image 
+                src="/assets/img/logo.png" 
                 alt="logo" 
                 className="logo img-responsive"
-                width={120}
+                width={80}
                 height={40}
-              /> */}
-              <p className='color-red'>मराठा समाज प्रतिष्ठान</p>
+              />
             </Link>
           </div>
 

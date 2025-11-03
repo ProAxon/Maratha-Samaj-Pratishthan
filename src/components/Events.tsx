@@ -6,14 +6,15 @@ import Image from 'next/image';
 export default function Events() {
   const events = [
     {
-      id: 1,
+      id: 'deepstambh-2025',
       image: '/assets/img/event-img.jpg',
       date: '15',
-      month: 'जानेवारी',
-      title: 'दीपस्तंभ पुरस्कार सोहळा - प्रेरणादायी व्यक्तिमत्त्वांचा सन्मान',
-      description: 'मराठा समाजातील प्रेरणादायी व्यक्तिमत्त्वांचा सन्मान करणारा वार्षिक कार्यक्रम',
-      venue: 'मुंबई, महाराष्ट्र'
-    },
+      month: 'नोव्हेंबर',
+      title: '🪔 दीपस्तंभ २०२५ — पुरस्कार वितरण व दिवाळी स्नेहमिलन',
+      description: 'समाजातील कार्यकर्तृत्ववान, प्रेरणादायी व्यक्तींना सन्मानित करण्याचा सोहळा आणि स्किल सेंटर प्रकल्प सादरीकरण.',
+      venue: 'विवेकानंद महाविद्यालय सभागृह, छत्रपती संभाजीनगर',
+      link: '/events/deepstambh-2025'
+    }
 
   ];
 
@@ -49,14 +50,14 @@ export default function Events() {
                   </div>
                   <div className="ul-event-txt">
                     <h3 className="ul-event-title marathi-heading">
-                      <Link href="/event-details">{event.title}</Link>
+                      <Link href={(event as any).link || '/events'}>{event.title}</Link>
                     </h3>
                     <p className="ul-event-descr marathi-text">{event.description}</p>
                     <div className="ul-event-info">
                       <span className="ul-event-info-title marathi-text">स्थळ</span>
                       <p className="ul-event-info-descr marathi-text">{event.venue}</p>
                     </div>
-                    <Link href="/event-details" className="ul-btn">
+                    <Link href={(event as any).link || '/events'} className="ul-btn">
                       <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> तपशील जाणून घ्या
                     </Link>
                   </div>

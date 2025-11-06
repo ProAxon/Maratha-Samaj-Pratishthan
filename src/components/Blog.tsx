@@ -7,7 +7,7 @@ export default function Blog() {
   const blogs = [
     {
       id: 1,
-      image: '/assets/img/donation-1.jpg',
+      image: '/assets/img/Donation-1.jpg',
       date: '15',
       month: 'डिसेंबर',
       author: 'संपादक',

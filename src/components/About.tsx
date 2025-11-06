@@ -5,14 +5,14 @@ import Image from 'next/image';
 
 export default function About() {
   return (
-    <section className="ul-about ul-section-spacing wow animate__fadeInUp">
+    <section id="about" className="ul-about ul-section-spacing wow animate__fadeInUp">
       <div className="ul-container">
         <div className="row row-cols-md-2 row-cols-1 align-items-center gy-4 ul-about-row">
           <div className="col">
             <div className="ul-about-imgs">
               <div className="img-wrapper img-container">
                 <Image 
-                  src="/assets/img/maratha.jpg" 
+                  src="/assets/img/maratha.png" 
                   alt="Image"
                   width={500}
                   height={500}
@@ -71,9 +71,9 @@ export default function About() {
               </div>
 
               <div className="ul-about-bottom">
-                <Link href="/about" className="ul-btn">
+                <a href="#programs" className="ul-btn">
                   <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> अधिक जाणून घ्या
-                </Link>
+                </a>
 
                 <div className="ul-about-call">
                   <div className="icon"><i className="flaticon-telephone-call"></i></div>

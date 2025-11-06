@@ -32,7 +32,7 @@ export default function About() {
                 </p>
                 <p className="ul-section-descr">
                   Our mission is to provide support, resources, and opportunities to individuals and families who need it most. 
-                  Through various programs and initiatives, we work tirelessly to improve lives and build stronger communities.
+                  Through various Donations and initiatives, we work tirelessly to improve lives and build stronger communities.
                 </p>
                 <div className="ul-about-page-stats">
                   <div className="row">
@@ -82,7 +82,7 @@ export default function About() {
                 </div>
                 <h3>Our Mission</h3>
                 <p>
-                  To empower communities through education, healthcare, and social support programs that create lasting positive change.
+                  To empower communities through education, healthcare, and social support Donations that create lasting positive change.
                 </p>
               </div>
             </div>

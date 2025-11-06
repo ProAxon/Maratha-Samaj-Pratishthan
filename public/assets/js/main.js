@@ -627,14 +627,14 @@ document.addEventListener("DOMContentLoaded", (event) => {
     });
 
     // dontations slider
-    new Swiper(".ul-donations-slider", {
+    new Swiper(".ul-Donations-slider", {
         slidesPerView: 6,
         spaceBetween: 20,
         // loop: true,
         autoplay: true,
         navigation: {
-            prevEl: ".ul-donations-slider-nav .prev",
-            nextEl: ".ul-donations-slider-nav .next",
+            prevEl: ".ul-Donations-slider-nav .prev",
+            nextEl: ".ul-Donations-slider-nav .next",
         },
         breakpoints: {
             0: {

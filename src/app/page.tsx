@@ -19,13 +19,11 @@ export default function Home() {
       <About />
       <MissionVision />
       <Donations />
-      <DonateForm />
       <Stats />
       <Events />
       <WhyJoin />
-      <Team />
-      <Testimonial />
-      <Blog />
+      {/* <Team /> */}
+
       {/* <Gallery /> */}
     </Layout>
   );

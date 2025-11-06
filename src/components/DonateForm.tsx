@@ -8,7 +8,7 @@ export default function DonateForm() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle donation form submission
+    // Handle Donation form submission
     console.log('Donation amount:', selectedAmount === 'custom' ? customAmount : selectedAmount);
   };
 
@@ -87,18 +87,18 @@ export default function DonateForm() {
                 <span className="ul-section-sub-title text-white marathi-subtitle">सहयोग करा</span>
                 <h2 className="ul-section-title text-white marathi-heading">समाजाच्या विकासासाठी सहयोग</h2>
 
-                <div className="ul-donation-progress">
-                  <div className="donation-progress-container ul-progress-container">
+                <div className="ul-Donation-progress">
+                  <div className="Donation-progress-container ul-progress-container">
                     <div 
-                      className="donation-progressbar ul-progressbar" 
+                      className="Donation-progressbar ul-progressbar" 
                       data-ul-progress-value="64"
                     >
-                      <div className="donation-progress-label ul-progress-label"></div>
+                      <div className="Donation-progress-label ul-progress-label"></div>
                     </div>
                   </div>
-                  <div className="ul-donation-progress-labels">
-                    <span className="ul-donation-progress-label">Raised : $25,000</span>
-                    <span className="ul-donation-progress-label">Goal : $30,000</span>
+                  <div className="ul-Donation-progress-labels">
+                    <span className="ul-Donation-progress-label">Raised : $25,000</span>
+                    <span className="ul-Donation-progress-label">Goal : $30,000</span>
                   </div>
                 </div>
               </div>

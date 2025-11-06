@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 export default function Footer() {
   return (
-    <footer className="ul-footer">
+    <footer id="contact" className="ul-footer">
       <div className="ul-footer-top">
         <div className="ul-footer-container">
           <div className="ul-footer-top-contact-infos">
@@ -20,7 +20,7 @@ export default function Footer() {
               {/* txt */}
               <div className="ul-footer-top-contact-info-txt">
                 <span className="ul-footer-top-contact-info-label marathi-text">पत्ता</span>
-                <h5 className="ul-footer-top-contact-info-address marathi-text">मुंबई, महाराष्ट्र, भारत</h5>
+                <h5 className="ul-footer-top-contact-info-address marathi-text">छत्रपती संभाजीनगर, महाराष्ट्र</h5>
               </div>
             </div>
 
@@ -67,7 +67,7 @@ export default function Footer() {
             <div className="ul-footer-about">
               <Link href="/">
                 <Image 
-                  src="/assets/img/logo-white.svg" 
+                  src="/assets/img/logo.png" 
                   alt="logo" 
                   className="logo img-responsive"
                   width={120}
@@ -78,60 +78,33 @@ export default function Footer() {
                 मराठा समाज प्रतिष्ठान ही सर्व मराठा बांधवांची एकत्रित समुदाय संस्था आहे, जी समाजाच्या सर्वांगीण उन्नती आणि सशक्तीकरणासाठी कार्य करते.
               </p>
               <div className="ul-footer-socials">
-                <a href="#"><i className="flaticon-facebook"></i></a>
-                <a href="#"><i className="flaticon-twitter"></i></a>
-                <a href="#"><i className="flaticon-linkedin-big-logo"></i></a>
-                <a href="#"><i className="flaticon-youtube"></i></a>
+                <a href="https://www.facebook.com/share/1DJsnQ5ujR/?mibextid=wwXIfr" target="_blank"><i className="flaticon-facebook"></i></a>
+                <a href="https://www.instagram.com/marathasamajpratishthan/" target="_blank"><i className="flaticon-instagram"></i></a>
               </div>
             </div>
 
             <div className="ul-footer-widget">
-              <h3 className="ul-footer-widget-title">Quick Links</h3>
+              <h3 className="ul-footer-widget-title marathi-heading">द्रुत दुवे</h3>
               <div className="ul-footer-widget-links">
-                <Link href="/about">About Us</Link>
-                <Link href="/services">Our Services</Link>
-                <Link href="/blog">Our Blogs</Link>
-                <Link href="/faq">FAQ'S</Link>
-                <Link href="/contact">Contact Us</Link>
+                <a href="#about" className="marathi-text">आमच्याबद्दल</a>
+                <a href="#programs" className="marathi-text">उपक्रम</a>
+                <a href="#events" className="marathi-text">कार्यक्रम</a>
+                <a href="#team" className="marathi-text">संघ</a>
+                <a href="#contact" className="marathi-text">संपर्क</a>
               </div>
             </div>
 
            
             <div className="ul-footer-widget ul-nwsltr-widget">
-              <h3 className="ul-footer-widget-title">Contact Us</h3>
+              <h3 className="ul-footer-widget-title marathi-heading">संपर्क</h3>
               <div className="ul-footer-widget-links ul-footer-contact-links">
                 <a href="mailto:info@example.com">
-                  <i className="flaticon-mail"></i> info@example.com
+                  <i className="flaticon-mail"></i> info@marathasamajpratishthan.org
                 </a>
                 <a href="tel:123-456-7890">
-                  <i className="flaticon-telephone-call"></i> 123-456-7890
+                  <i className="flaticon-telephone-call"></i> +91 98765 43210
                 </a>
               </div>
-              <form action="#" className="ul-nwsltr-form">
-                <div className="top">
-                  <input 
-                    type="email" 
-                    name="email" 
-                    id="nwsltr-email" 
-                    placeholder="Your Email Address" 
-                    className="ul-nwsltr-input"
-                  />
-                  <button type="submit">
-                    <i className="flaticon-next"></i>
-                  </button>
-                </div>
-                <div className="agreement">
-                  <label htmlFor="nwsltr-agreement" className="ul-checkbox-wrapper">
-                    <input type="checkbox" name="agreement" id="nwsltr-agreement" hidden />
-                    <span className="ul-checkbox">
-                      <i className="flaticon-tick"></i>
-                    </span>
-                    <span className="ul-checkbox-txt">
-                      I agree with the <a href="#">Privacy Policy</a>
-                    </span>
-                  </label>
-                </div>
-              </form>
             </div>
           </div>
         </div>

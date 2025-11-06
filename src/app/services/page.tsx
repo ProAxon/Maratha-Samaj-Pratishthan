@@ -13,13 +13,13 @@ export default function Services() {
       id: 2,
       image: '/assets/img/service-2.jpg',
       title: 'Healthcare Services',
-      description: 'Our healthcare programs provide medical assistance and health education to underserved communities.'
+      description: 'Our healthcare Donations provide medical assistance and health education to underserved communities.'
     },
     {
       id: 3,
       image: '/assets/img/service-3.jpg',
       title: 'Food Distribution',
-      description: 'We organize food distribution programs to help families facing food insecurity.'
+      description: 'We organize food distribution Donations to help families facing food insecurity.'
     },
     {
       id: 4,

@@ -29,11 +29,12 @@ export default function WhyJoin() {
             <div className="col">
               <div className="ul-why-join-img">
                 <Image 
-                  src="/assets/img/why-join.jpg" 
+                  src="/assets/img/why-join.png" 
                   alt="Image"
                   width={500}
                   height={400}
                   className="img-responsive"
+                  style={{ objectFit: 'contain', backgroundColor: 'transparent' }}
                 />
               </div>
             </div>

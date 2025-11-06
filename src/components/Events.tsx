@@ -7,19 +7,19 @@ export default function Events() {
   const events = [
     {
       id: 'deepstambh-2025',
-      image: '/assets/img/event-img.jpg',
+      image: '/assets/img/event-img.png',
       date: '15',
       month: 'नोव्हेंबर',
       title: '🪔 दीपस्तंभ २०२५ — पुरस्कार वितरण व दिवाळी स्नेहमिलन',
       description: 'समाजातील कार्यकर्तृत्ववान, प्रेरणादायी व्यक्तींना सन्मानित करण्याचा सोहळा आणि स्किल सेंटर प्रकल्प सादरीकरण.',
-      venue: 'विवेकानंद महाविद्यालय सभागृह, छत्रपती संभाजीनगर',
-      link: '/events/deepstambh-2025'
+      venue: 'एम. आय. टी. प्रांगण, बीड बायपास रोड, छत्रपती संभाजीनगर',
+      link: 'https://deepstambh.marathasamajpratishthan.org/'
     }
 
   ];
 
   return (
-    <section className="ul-events ul-section-spacing pt-0">
+    <section id="events" className="ul-events ul-section-spacing pt-0">
       <div className="ul-container">
         {/* heading */}
         <div className="ul-section-heading align-items-center wow animate__fadeInUp">
@@ -27,9 +27,9 @@ export default function Events() {
             <span className="ul-section-sub-title marathi-subtitle">आगामी कार्यक्रम</span>
             <h2 className="ul-section-title text-white marathi-heading">मराठा समाज प्रतिष्ठानचे कार्यक्रम</h2>
           </div>
-          <Link href="/events" className="ul-btn">
+          <a href="#events" className="ul-btn">
             <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> अधिक जाणून घ्या
-          </Link>
+          </a>
         </div>
 
         {/* events */}
@@ -45,6 +45,7 @@ export default function Events() {
                       width={400}
                       height={300}
                       className="img-responsive"
+                      style={{ objectFit: 'contain', backgroundColor: 'transparent' }}
                     />
                     <span className="date">{event.date} <span>{event.month}</span></span>
                   </div>

@@ -32,7 +32,7 @@ export default function Team() {
   ];
 
   return (
-    <section className="ul-team ul-section-spacing pt-0">
+    <section id="team" className="ul-team ul-section-spacing pt-0">
       <div className="ul-container">
         {/* Heading */}
         <div className="ul-section-heading justify-content-between">
@@ -41,9 +41,9 @@ export default function Team() {
             <h2 className="ul-section-title marathi-heading">समाजसेवेसाठी समर्पित नेतृत्व</h2>
           </div>
           <div>
-            <Link href="/team" className="ul-btn">
+            <a href="#contact" className="ul-btn">
               <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> सामील व्हा
-            </Link>
+            </a>
           </div>
         </div>
 

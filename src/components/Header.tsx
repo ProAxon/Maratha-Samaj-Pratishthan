@@ -12,8 +12,7 @@ export default function Header() {
     <header className="ul-header">
       <div className="ul-header-bottom to-be-sticky">
         <div className="ul-header-bottom-wrapper ul-header-container">
-          <div className="logo-container">
-            <Link href="/" className="d-inline-block">
+        <Link href="/" className="d-inline-block">
               <Image 
                 src="/assets/img/logo.png" 
                 alt="logo" 
@@ -22,19 +21,17 @@ export default function Header() {
                 height={40}
               />
             </Link>
-          </div>
 
           {/* header nav */}
           <div className="ul-header-nav-wrapper">
             <div className="to-go-to-sidebar-in-mobile">
               <nav className="ul-header-nav">
-                <Link href="/">मुख्यपृष्ठ</Link>
-                <Link href="/about">आमच्याबद्दल</Link>
-                <Link href="/services">सेवा</Link>
-                <Link href="/donations">उपक्रम</Link>
-                <Link href="/events">कार्यक्रम</Link>
-                <Link href="/team">संघ</Link>
-                <Link href="/contact">संपर्क</Link>
+                <a href="#home">मुख्यपृष्ठ</a>
+                <a href="#about">आमच्याबद्दल</a>
+                <a href="#programs">उपक्रम</a>
+                <a href="#events">कार्यक्रम</a>
+                <a href="#team">संघ</a>
+                <a href="#contact">संपर्क</a>
               </nav>
             </div>
           </div>
@@ -47,9 +44,9 @@ export default function Header() {
             >
               <i className="flaticon-search"></i>
             </button>
-            <Link href="/contact" className="ul-btn d-sm-inline-flex d-none">
+            <a href="#contact" className="ul-btn d-sm-inline-flex d-none">
               <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> सामील व्हा
-            </Link>
+            </a>
             <button 
               className="ul-header-sidebar-opener d-lg-none d-inline-flex"
               onClick={() => setIsSidebarOpen(true)}

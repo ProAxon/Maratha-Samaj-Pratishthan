@@ -19,7 +19,7 @@ This is a modern Next.js website for Maratha Samaj Pratishthan, a non-profit org
 
 - **Home** - Main landing page with all sections
 - **About** - Information about the organization
-- **Services** - Available services and programs
+- **Services** - Available services and Donations
 - **Donations** - Donation opportunities and progress
 - **Contact** - Contact form and information
 - **Team** - Team members and leadership
@@ -60,7 +60,7 @@ src/
 ├── app/                    # Next.js App Router pages
 │   ├── about/             # About page
 │   ├── contact/           # Contact page
-│   ├── donations/         # Donations page
+│   ├── Donations/         # Donations page
 │   ├── services/          # Services page
 │   ├── globals.css        # Global styles
 │   ├── layout.tsx         # Root layout

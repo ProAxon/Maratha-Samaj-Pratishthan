@@ -6,6 +6,13 @@ export const metadata: Metadata = {
   description: 'मराठा समाज प्रतिष्ठान ही सर्व मराठा बांधवांची एकत्रित समुदाय संस्था आहे, जी समाजाच्या सर्वांगीण उन्नती आणि सशक्तीकरणासाठी कार्य करते.',
   keywords: 'मराठा समाज, NGO, non-profit, शिक्षण, उद्योजकता, समाजसशक्तीकरण, मराठी संस्कृती',
   authors: [{ name: 'मराठा समाज प्रतिष्ठान' }],
+  icons: {
+    icon: [
+      { url: '/assets/img/logo.png', type: 'image/png' },
+    ],
+    shortcut: '/assets/img/logo.png',
+    apple: '/assets/img/logo.png',
+  },
 }
 
 export const viewport = {
@@ -21,6 +28,11 @@ export default function RootLayout({
   return (
     <html lang="mr">
       <head>
+        {/* Favicon */}
+        <link rel="icon" href="/assets/img/logo.png" type="image/png" sizes="any" />
+        <link rel="shortcut icon" href="/assets/img/logo.png" type="image/png" />
+        <link rel="apple-touch-icon" href="/assets/img/logo.png" />
+        
         {/* Google Fonts - Marathi Support */}
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />

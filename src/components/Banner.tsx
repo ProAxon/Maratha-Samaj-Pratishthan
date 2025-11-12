@@ -18,9 +18,6 @@ export default function Banner() {
                   सर्व मराठा बांधवांसाठी एकत्रित व्यासपीठ – शिक्षण, उद्योजकता आणि समाजसशक्तीकरणाच्या दिशेने एक मजबूत पाऊल. प्रत्येक मराठा सबळ झाला तरच संपूर्ण समाज समर्थ होईल.
                 </p>
                 <div className="ul-banner-btns">
-                  <a href="#contact" className="ul-btn">
-                    <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> सदस्य व्हा
-                  </a>
                   <a href="#programs" className="ul-btn ul-btn--2">
                     <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> उपक्रम जाणून घ्या
                   </a>

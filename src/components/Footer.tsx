@@ -40,23 +40,6 @@ export default function Footer() {
                 </h5>
               </div>
             </div>
-
-            {/* single info */}
-            <div className="ul-footer-top-contact-info">
-              {/* icon */}
-              <div className="ul-footer-top-contact-info-icon">
-                <div className="ul-footer-top-contact-info-icon-inner">
-                  <i className="flaticon-telephone-call-1"></i>
-                </div>
-              </div>
-              {/* txt */}
-              <div className="ul-footer-top-contact-info-txt">
-                <span className="ul-footer-top-contact-info-label marathi-text">संपर्क</span>
-                <h5 className="ul-footer-top-contact-info-address">
-                  <a href="tel:+919876543210" className="marathi-text">+91 98765 43210</a>
-                </h5>
-              </div>
-            </div>
           </div>
         </div>
       </div>

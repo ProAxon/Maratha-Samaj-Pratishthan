@@ -74,14 +74,6 @@ export default function About() {
                 <a href="#programs" className="ul-btn">
                   <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> अधिक जाणून घ्या
                 </a>
-
-                <div className="ul-about-call">
-                  <div className="icon"><i className="flaticon-telephone-call"></i></div>
-                  <div className="txt">
-                    <span className="call-title marathi-text">संपर्क साधा</span>
-                    <a href="tel:+919876543210" className="marathi-text">+91 98765 43210</a>
-                  </div>
-                </div>
               </div>
             </div>
           </div>

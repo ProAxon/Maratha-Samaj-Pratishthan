@@ -1,34 +1,33 @@
 'use client';
 
-import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Team() {
   const teamMembers = [
     {
       id: 1,
-      image: '/assets/img/member-1.jpg',
-      name: 'डॉ. राजेश पाटील',
+      image: '/assets/img/member-1.png',
+      name: 'श्री मानसिंह पवार',
       designation: 'अध्यक्ष'
     },
     {
       id: 2,
-      image: '/assets/img/member-1.jpg',
-      name: 'श्रीमती सुनीता देशमुख',
+      image: '/assets/img/member-2.png',
+      name: 'श्री प्रमोद खैरनार',
       designation: 'उपाध्यक्ष'
     },
     {
       id: 3,
-      image: '/assets/img/member-1.jpg',
-      name: 'श्री विजय जाधव',
+      image: '/assets/img/member-3.png',
+      name: 'विंग कमांडर टी. आर. जाधव, माजी सैनिक',
       designation: 'सचिव'
     },
     {
-      id: 4,
-      image: '/assets/img/member-1.jpg',
-      name: 'डॉ. प्रिया शर्मा',
-      designation: 'कोषाध्यक्ष'
-    }
+      id: 3,
+      image: '/assets/img/member-4.png',
+      name: 'श्री सुनील किर्डक',
+      designation: 'सचिव'
+    },
   ];
 
   return (
@@ -58,6 +57,7 @@ export default function Team() {
                     width={300}
                     height={300}
                     className="img-responsive"
+                    style={{ objectFit: 'contain', width: '100%', height: '100%' }}
                   />
                   <div className="ul-team-member-socials">
                     <a href="#"><i className="flaticon-facebook"></i></a>
@@ -68,9 +68,9 @@ export default function Team() {
                 </div>
                 <div className="ul-team-member-info">
                   <h3 className="ul-team-member-name marathi-heading">
-                    <Link href="/team-details">{member.name}</Link>
+                    {member.name}
                   </h3>
-                  <p className="ul-team-member-designation marathi-text">{member.designation}</p>
+                  {/* <p className="ul-team-member-designation marathi-text">{member.designation}</p> */}
                 </div>
               </div>
             </div>

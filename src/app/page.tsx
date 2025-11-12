@@ -24,7 +24,7 @@ export default function Home() {
       <Stats />
       <Events />
       <WhyJoin />
-      {/* <Team /> */}
+      <Team />
 
       {/* <Gallery /> */}
     </Layout>

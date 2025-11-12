@@ -1,5 +1,6 @@
 import Layout from '@/components/Layout';
 import Banner from '@/components/Banner';
+import Founder from '@/components/Founder';
 import About from '@/components/About';
 import MissionVision from '@/components/MissionVision';
 import Donations from '@/components/Donations';
@@ -16,13 +17,14 @@ export default function Home() {
   return (
     <Layout>
       <Banner />
+      <Founder />
       <About />
       <MissionVision />
       <Donations />
       <Stats />
       <Events />
       <WhyJoin />
-      {/* <Team /> */}
+      <Team />
 
       {/* <Gallery /> */}
     </Layout>

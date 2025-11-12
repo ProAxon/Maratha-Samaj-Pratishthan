@@ -89,7 +89,7 @@ export default function About() {
       </div>
 
       {/* vector */}
-      <div className="ul-about-vectors">
+      {/* <div className="ul-about-vectors">
         <Image 
           src="/assets/img/about-vector-1.png" 
           alt="vector" 
@@ -97,7 +97,7 @@ export default function About() {
           width={200}
           height={100}
         />
-      </div>
+      </div> */}
     </section>
   );
 }

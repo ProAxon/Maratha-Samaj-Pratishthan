@@ -1,0 +1,19 @@
+0 verbose cli /Users/nani/.nvm/versions/node/v22.20.0/bin/node /Users/nani/.nvm/versions/node/v22.20.0/bin/npm
+1 info using npm@10.9.3
+2 info using node@v22.20.0
+3 silly config load:file:/Users/nani/.nvm/versions/node/v22.20.0/lib/node_modules/npm/npmrc
+4 silly config load:file:/Users/nani/Desktop/ProAxon/Maratha/Maratha-Samaj-Pratishthan/.npmrc
+5 silly config load:file:/Users/nani/.npmrc
+6 silly config load:file:/Users/nani/.nvm/versions/node/v22.20.0/etc/npmrc
+7 verbose title npm install swiper
+8 verbose argv "install" "swiper" "--cache" ".npm-cache"
+9 verbose logfile logs-max:10 dir:/Users/nani/Desktop/ProAxon/Maratha/Maratha-Samaj-Pratishthan/.npm-cache/_logs/2025-11-13T09_19_48_009Z-
+10 verbose logfile /Users/nani/Desktop/ProAxon/Maratha/Maratha-Samaj-Pratishthan/.npm-cache/_logs/2025-11-13T09_19_48_009Z-debug-0.log
+11 silly logfile done cleaning log files
+12 verbose cwd /Users/nani/Desktop/ProAxon/Maratha/Maratha-Samaj-Pratishthan
+13 verbose os Darwin 25.1.0
+14 verbose node v22.20.0
+15 verbose npm  v10.9.3
+16 verbose exit 1
+17 verbose code 1
+18 error A complete log of this run can be found in: /Users/nani/Desktop/ProAxon/Maratha/Maratha-Samaj-Pratishthan/.npm-cache/_logs/2025-11-13T09_19_48_009Z-debug-0.log

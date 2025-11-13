@@ -263,6 +263,17 @@ html {
   -webkit-text-size-adjust: 100%;
 }
 
+/* Team slider navigation */
+.ul-team-slider .swiper-button-next,
+.ul-team-slider .swiper-button-prev {
+  color: var(--ul-primary);
+}
+
+.ul-team-slider .swiper-button-next::after,
+.ul-team-slider .swiper-button-prev::after {
+  font-size: clamp(20px, 2.5vw, 32px);
+}
+
 /* Fix for iOS Safari viewport issues */
 @supports (-webkit-touch-callout: none) {
   .ul-container {

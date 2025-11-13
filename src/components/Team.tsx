@@ -1,6 +1,11 @@
 'use client';
 
 import Image from 'next/image';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation, Autoplay } from 'swiper/modules';
+
+import 'swiper/css';
+import 'swiper/css/navigation';
 
 export default function Team() {
   const teamMembers = [
@@ -8,25 +13,37 @@ export default function Team() {
       id: 1,
       image: '/assets/img/member-1.png',
       name: 'श्री मानसिंह पवार',
-      designation: 'अध्यक्ष'
+      designation: 'अध्यक्ष',
     },
     {
       id: 2,
       image: '/assets/img/member-2.png',
       name: 'श्री प्रमोद खैरनार',
-      designation: 'उपाध्यक्ष'
+      designation: 'उपाध्यक्ष',
     },
     {
       id: 3,
       image: '/assets/img/member-3.png',
       name: 'विंग कमांडर टी. आर. जाधव, माजी सैनिक',
-      designation: 'सचिव'
+      designation: 'सचिव',
     },
     {
-      id: 3,
+      id: 4,
       image: '/assets/img/member-4.png',
       name: 'श्री सुनील किर्डक',
-      designation: 'सचिव'
+      designation: 'सचिव',
+    },
+    {
+      id: 5,
+      image: '/assets/img/member-5.png',
+      name: 'श्रीमती अनुराधा चव्हाण',
+      designation: 'सचिव',
+    },
+    {
+      id: 6,
+      image: '/assets/img/member-6.png',
+      name: 'श्री सतीश तुपे',
+      designation: 'सचिव',
     },
   ];
 
@@ -41,19 +58,34 @@ export default function Team() {
           </div>
           <div>
             <a href="#contact" className="ul-btn">
-              <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> सामील व्हा
+              <i className="flaticon-fast-forward-double-right-arrows-symbol" ></i> सामील व्हा
             </a>
           </div>
         </div>
 
-        <div className="row row-cols-md-4 row-cols-sm-3 row-cols-2 row-cols-xxs-1 ul-team-row justify-content-center">
+        <Swiper
+          modules={[Navigation, Autoplay]}
+          className="ul-team-slider"
+          slidesPerView={3}
+          spaceBetween={30}
+          loop
+          navigation
+          speed={900}
+          autoplay={{ delay: 1500, disableOnInteraction: false }}
+          breakpoints={{
+            0: { slidesPerView: 1, spaceBetween: 16 },
+            576: { slidesPerView: 2, spaceBetween: 20 },
+            992: { slidesPerView: 3, spaceBetween: 26 },
+            1400: { slidesPerView: 4, spaceBetween: 32 },
+          }}
+        >
           {teamMembers.map((member) => (
-            <div key={member.id} className="col">
+            <SwiperSlide key={member.id}>
               <div className="ul-team-member">
                 <div className="ul-team-member-img img-container">
-                  <Image 
-                    src={member.image} 
-                    alt="Team Member Image"
+                  <Image
+                    src={member.image}
+                    alt={member.name}
                     width={300}
                     height={300}
                     className="img-responsive"
@@ -70,12 +102,12 @@ export default function Team() {
                   <h3 className="ul-team-member-name marathi-heading">
                     {member.name}
                   </h3>
-                  {/* <p className="ul-team-member-designation marathi-text">{member.designation}</p> */}
+                  <p className="ul-team-member-designation marathi-text">{member.designation}</p>
                 </div>
               </div>
-            </div>
+            </SwiperSlide>
           ))}
-        </div>
+        </Swiper>
       </div>
     </section>
   );

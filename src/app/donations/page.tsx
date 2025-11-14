@@ -15,33 +15,47 @@ export default function Donations() {
   const [bankName, setBankName] = useState('');
   const [panCard, setPanCard] = useState('');
   const [transactionId, setTransactionId] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
 
   // UPI account for donations (QR code available)
   const UPI_ID = 'wctrjadhav@okaxis';
   const WHATSAPP_NUMBER = '9822068794'; // Wing Commander T.R. Jadhav
   const CONTACT_MOBILE = '9822057894';
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setSubmitMessage(null);
 
     const amountNum = parseFloat(amount);
     const requiresDocuments = amountNum > 5000;
 
     // Validate amount
     if (!amount || isNaN(amountNum) || amountNum <= 0) {
-      alert('कृपया वैध रक्कम प्रविष्ट करा');
+      setSubmitMessage({ type: 'error', text: 'कृपया वैध रक्कम प्रविष्ट करा' });
+      setIsSubmitting(false);
       return;
     }
 
     // Validate required fields
     if (!donorName || !donorEmail || !donorPhone) {
-      alert('कृपया सर्व आवश्यक माहिती भरा');
+      setSubmitMessage({ type: 'error', text: 'कृपया सर्व आवश्यक माहिती भरा' });
+      setIsSubmitting(false);
       return;
     }
 
     // Validate PAN for donations above 5000
     if (requiresDocuments && !panCard) {
-      alert('₹५००० पेक्षा जास्त रकमेसाठी PAN कार्ड आवश्यक आहे');
+      setSubmitMessage({ type: 'error', text: '₹५००० पेक्षा जास्त रकमेसाठी PAN कार्ड आवश्यक आहे' });
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Validate payment method specific fields
+    if (paymentMethod === 'cheque' && (!chequeNumber || !bankName)) {
+      setSubmitMessage({ type: 'error', text: 'कृपया चेक/DD क्रमांक आणि बँकेचे नाव भरा' });
+      setIsSubmitting(false);
       return;
     }
 
@@ -54,32 +68,70 @@ export default function Donations() {
       ...(requiresDocuments && { panCard }),
       ...(paymentMethod === 'upi' && { upiId: UPI_ID }),
       ...(paymentMethod === 'cheque' && { chequeNumber, bankName }),
+      ...(paymentMethod === 'netbanking' && transactionId && { transactionId }),
     };
 
-    console.log('Donation data:', donationData);
+    try {
+      // Submit to API
+      const response = await fetch('/api/donations', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(donationData),
+      });
 
-    // Handle donation submission based on payment method
-    if (paymentMethod === 'upi') {
-      // For web, we'll show UPI details and instructions
-      const upiUrl = `upi://pay?pa=${UPI_ID}&am=${amount}&cu=INR&tn=Donation%20to%20Maratha%20Samaj%20Pratishthan`;
+      const result = await response.json();
 
-      // Try to open UPI app (works on mobile browsers)
-      if (typeof window !== 'undefined') {
-        window.location.href = upiUrl;
-
-        // Fallback: Show instructions
-        setTimeout(() => {
-          alert(`UPI ID: ${UPI_ID}\nरक्कम: ₹${amount}\n\nकृपया आपल्या UPI ऍपमध्ये ही माहिती वापरून पेमेंट करा.`);
-        }, 1000);
-      }
-    } else if (paymentMethod === 'cheque') {
-      if (!chequeNumber || !bankName) {
-        alert('कृपया चेक/DD क्रमांक आणि बँकेचे नाव भरा');
+      if (!response.ok) {
+        setSubmitMessage({ type: 'error', text: result.error || 'त्रुटी आली. कृपया पुन्हा प्रयत्न करा.' });
+        setIsSubmitting(false);
         return;
       }
-      alert('आपल्या सहयोगाबद्दल धन्यवाद! कृपया चेक/DD पुढील पत्त्यावर पाठवा:\nमराठा समाज प्रतिष्ठान, छत्रपती संभाजीनगर, महाराष्ट्र');
-    } else if (paymentMethod === 'netbanking') {
-      alert('आपल्या सहयोगाबद्दल धन्यवाद! कृपया हस्तांतरण पूर्ण करा आणि आम्हाला व्यवहार ID पाठवा.');
+
+      // Success - show success message
+      setSubmitMessage({ type: 'success', text: result.message || 'आपली माहिती यशस्वीरित्या साठवली गेली आहे!' });
+
+      // Handle payment method specific actions
+      if (paymentMethod === 'upi') {
+        // For web, we'll show UPI details and instructions
+        const upiUrl = `upi://pay?pa=${UPI_ID}&am=${amount}&cu=INR&tn=Donation%20to%20Maratha%20Samaj%20Pratishthan`;
+
+        // Try to open UPI app (works on mobile browsers)
+        if (typeof window !== 'undefined') {
+          // Delay to show success message first
+          setTimeout(() => {
+            window.location.href = upiUrl;
+            // Fallback: Show instructions if UPI app doesn't open
+            setTimeout(() => {
+              alert(`UPI ID: ${UPI_ID}\nरक्कम: ₹${amount}\n\nकृपया आपल्या UPI ऍपमध्ये ही माहिती वापरून पेमेंट करा.`);
+            }, 2000);
+          }, 1000);
+        }
+      } else if (paymentMethod === 'cheque') {
+        alert('आपल्या सहयोगाबद्दल धन्यवाद! कृपया चेक/DD पुढील पत्त्यावर पाठवा:\nमराठा समाज प्रतिष्ठान, छत्रपती संभाजीनगर, महाराष्ट्र');
+      } else if (paymentMethod === 'netbanking') {
+        alert('आपल्या सहयोगाबद्दल धन्यवाद! कृपया हस्तांतरण पूर्ण करा आणि आम्हाला व्यवहार ID पाठवा.');
+      }
+
+      // Reset form after successful submission
+      setTimeout(() => {
+        setDonorName('');
+        setDonorEmail('');
+        setDonorPhone('');
+        setPanCard('');
+        setChequeNumber('');
+        setBankName('');
+        setAmount('');
+        setTransactionId('');
+        setSubmitMessage(null);
+      }, 5000);
+
+    } catch (error) {
+      console.error('Error submitting donation:', error);
+      setSubmitMessage({ type: 'error', text: 'नेटवर्क त्रुटी. कृपया पुन्हा प्रयत्न करा.' });
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -784,18 +836,37 @@ export default function Donations() {
                 </div>
                   )}
 
+                  {/* Submit Message */}
+                  {submitMessage && (
+                    <div style={{
+                      padding: '12px 16px',
+                      borderRadius: '8px',
+                      marginBottom: '16px',
+                      marginTop: '16px',
+                      backgroundColor: submitMessage.type === 'success' ? '#d4edda' : '#f8d7da',
+                      color: submitMessage.type === 'success' ? '#155724' : '#721c24',
+                      border: `1px solid ${submitMessage.type === 'success' ? '#c3e6cb' : '#f5c6cb'}`,
+                      fontSize: '14px'
+                    }}>
+                      {submitMessage.text}
+                    </div>
+                  )}
+
                   {/* Submit Button */}
                   <button
                     type="submit"
                     className="ul-btn"
+                    disabled={isSubmitting}
                     style={{
                       width: '100%',
                       marginTop: '8px',
-                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)',
+                      opacity: isSubmitting ? 0.6 : 1,
+                      cursor: isSubmitting ? 'not-allowed' : 'pointer'
                     }}
                   >
                     <i className="flaticon-fast-forward-double-right-arrows-symbol"></i>
-                    सहयोग करा
+                    {isSubmitting ? 'साठवत आहे...' : 'सहयोग करा'}
                   </button>
                 </form>
               </div>

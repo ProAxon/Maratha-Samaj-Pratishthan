@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { getDatabase } from '@/lib/db';
+import { supabaseAdmin } from '@/lib/supabase-server';
 
 export async function POST(request: NextRequest) {
   try {
@@ -51,45 +51,38 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Get database instance
-    const db = getDatabase();
+    // Insert donation record into Supabase
+    const { data, error } = await supabaseAdmin
+      .from('donations')
+      .insert({
+        amount: amountNum,
+        payment_method: paymentMethod,
+        donor_name: donorName,
+        donor_email: donorEmail,
+        donor_phone: donorPhone,
+        pan_card: panCard || null,
+        upi_id: upiId || null,
+        cheque_number: chequeNumber || null,
+        bank_name: bankName || null,
+        transaction_id: transactionId || null,
+        status: 'pending',
+      })
+      .select()
+      .single();
 
-    // Insert donation record
-    const stmt = db.prepare(`
-      INSERT INTO donations (
-        amount,
-        payment_method,
-        donor_name,
-        donor_email,
-        donor_phone,
-        pan_card,
-        upi_id,
-        cheque_number,
-        bank_name,
-        transaction_id,
-        status
-      ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `);
-
-    const result = stmt.run(
-      amountNum,
-      paymentMethod,
-      donorName,
-      donorEmail,
-      donorPhone,
-      panCard || null,
-      upiId || null,
-      chequeNumber || null,
-      bankName || null,
-      transactionId || null,
-      'pending'
-    );
+    if (error) {
+      console.error('Supabase error:', error);
+      return NextResponse.json(
+        { error: 'सर्व्हर त्रुटी. कृपया पुन्हा प्रयत्न करा.' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json(
       {
         success: true,
         message: 'आपल्या सहयोगाबद्दल धन्यवाद! आपली माहिती यशस्वीरित्या साठवली गेली आहे.',
-        donationId: result.lastInsertRowid,
+        donationId: data.id,
       },
       { status: 201 }
     );
@@ -109,23 +102,38 @@ export async function GET(request: NextRequest) {
     const limit = parseInt(searchParams.get('limit') || '100');
     const offset = parseInt(searchParams.get('offset') || '0');
 
-    const db = getDatabase();
-    const stmt = db.prepare(`
-      SELECT * FROM donations 
-      ORDER BY created_at DESC 
-      LIMIT ? OFFSET ?
-    `);
+    // Fetch donations from Supabase
+    const { data: donations, error: fetchError } = await supabaseAdmin
+      .from('donations')
+      .select('*')
+      .order('created_at', { ascending: false })
+      .range(offset, offset + limit - 1);
 
-    const donations = stmt.all(limit, offset);
+    if (fetchError) {
+      console.error('Supabase fetch error:', fetchError);
+      return NextResponse.json(
+        { error: 'सर्व्हर त्रुटी. कृपया पुन्हा प्रयत्न करा.' },
+        { status: 500 }
+      );
+    }
 
     // Get total count
-    const countStmt = db.prepare('SELECT COUNT(*) as total FROM donations');
-    const total = countStmt.get() as { total: number };
+    const { count, error: countError } = await supabaseAdmin
+      .from('donations')
+      .select('*', { count: 'exact', head: true });
+
+    if (countError) {
+      console.error('Supabase count error:', countError);
+      return NextResponse.json(
+        { error: 'सर्व्हर त्रुटी. कृपया पुन्हा प्रयत्न करा.' },
+        { status: 500 }
+      );
+    }
 
     return NextResponse.json({
       success: true,
-      donations,
-      total: total.total,
+      donations: donations || [],
+      total: count || 0,
       limit,
       offset,
     });

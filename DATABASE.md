@@ -1,19 +1,32 @@
 # Database Setup
 
-This project uses SQLite with `better-sqlite3` to store donation information locally.
+This project uses **Supabase** (PostgreSQL) to store donation information in the cloud.
 
-## Database Location
+## Supabase Setup
 
-The database file is stored at: `data/donations.db`
+1. Create a Supabase account at [https://supabase.com](https://supabase.com)
+2. Create a new project
+3. Run the SQL migration file (`supabase-migration.sql`) in your Supabase SQL Editor
+4. Configure environment variables (see below)
 
-The database is automatically created when the first donation is submitted.
+## Environment Variables
+
+Create a `.env.local` file in the root directory with:
+
+```env
+NEXT_PUBLIC_SUPABASE_URL=your_supabase_project_url
+NEXT_PUBLIC_SUPABASE_ANON_KEY=your_supabase_anon_key
+SUPABASE_SERVICE_ROLE_KEY=your_supabase_service_role_key
+```
+
+Get these values from your Supabase project: Settings > API
 
 ## Database Schema
 
 ### donations table
 
-- `id` - INTEGER PRIMARY KEY (auto-increment)
-- `amount` - REAL (donation amount)
+- `id` - BIGSERIAL PRIMARY KEY (auto-increment)
+- `amount` - DECIMAL(10, 2) (donation amount)
 - `payment_method` - TEXT (upi, cheque, or netbanking)
 - `donor_name` - TEXT (donor's name)
 - `donor_email` - TEXT (donor's email)
@@ -24,8 +37,8 @@ The database is automatically created when the first donation is submitted.
 - `bank_name` - TEXT (bank name, if payment method is cheque)
 - `transaction_id` - TEXT (transaction ID for net banking)
 - `status` - TEXT (default: 'pending')
-- `created_at` - DATETIME (timestamp when record was created)
-- `updated_at` - DATETIME (timestamp when record was last updated)
+- `created_at` - TIMESTAMP WITH TIME ZONE (timestamp when record was created)
+- `updated_at` - TIMESTAMP WITH TIME ZONE (timestamp when record was last updated, auto-updated via trigger)
 
 ## API Endpoints
 
@@ -78,8 +91,9 @@ Retrieve donations (for admin use).
 
 ## Notes
 
-- The database file (`data/donations.db`) is automatically created on first use
-- Database files are excluded from git (see `.gitignore`)
-- For production deployments on serverless platforms (like Vercel), consider using a cloud database service instead of SQLite
-- The database uses WAL (Write-Ahead Logging) mode for better performance
+- The database is hosted on Supabase (PostgreSQL)
+- Environment variables are excluded from git (see `.gitignore`)
+- The `updated_at` field is automatically updated via a database trigger
+- Row Level Security (RLS) can be configured in Supabase for additional security
+- All data is stored in the cloud and accessible from anywhere
 

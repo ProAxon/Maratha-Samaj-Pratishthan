@@ -38,12 +38,10 @@ export default function Header() {
 
           {/* actions */}
           <div className="ul-header-actions">
-            <button 
-              className="ul-header-search-opener"
-              onClick={() => setIsSearchOpen(true)}
-            >
-              <i className="flaticon-search"></i>
-            </button>
+            
+            <Link href="/donations" className="ul-btn ul-btn--2 d-sm-inline-flex d-none" style={{ marginRight: '12px' }}>
+              <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> सहयोग करा
+            </Link>
             <a href="#contact" className="ul-btn d-sm-inline-flex d-none">
               <i className="flaticon-fast-forward-double-right-arrows-symbol"></i> सामील व्हा
             </a>

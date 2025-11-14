@@ -1,49 +1,90 @@
+'use client';
+
 import Layout from '@/components/Layout';
-import Image from 'next/image';
+import { useState } from 'react';
+
+type PaymentMethod = 'upi' | 'cheque' | 'netbanking';
 
 export default function Donations() {
-  const Donations = [
-    {
-      id: 1,
-      image: '/assets/img/Donation-1.jpg',
-      tag: 'Education',
-      progress: 75,
-      raised: '$15,000',
-      goal: '$20,000',
-      title: 'Support Education for Underprivileged Children',
-      description: 'Help us provide educational resources and support to children who need it most.'
-    },
-    {
-      id: 2,
-      image: '/assets/img/Donation-2.jpg',
-      tag: 'Healthcare',
-      progress: 60,
-      raised: '$12,000',
-      goal: '$20,000',
-      title: 'Medical Care for Rural Communities',
-      description: 'Support our healthcare initiatives to provide medical assistance to rural areas.'
-    },
-    {
-      id: 3,
-      image: '/assets/img/Donation-3.jpg',
-      tag: 'Food',
-      progress: 90,
-      raised: '$18,000',
-      goal: '$20,000',
-      title: 'Food Security Donation',
-      description: 'Help us fight hunger by supporting our food distribution Donations.'
-    },
-    {
-      id: 4,
-      image: '/assets/img/Donation-4.jpg',
-      tag: 'Community',
-      progress: 45,
-      raised: '$9,000',
-      goal: '$20,000',
-      title: 'Community Development Project',
-      description: 'Support our efforts to improve infrastructure and living conditions.'
+  const [amount, setAmount] = useState('');
+  const [paymentMethod, setPaymentMethod] = useState<PaymentMethod>('upi');
+  const [donorName, setDonorName] = useState('');
+  const [donorEmail, setDonorEmail] = useState('');
+  const [donorPhone, setDonorPhone] = useState('');
+  const [chequeNumber, setChequeNumber] = useState('');
+  const [bankName, setBankName] = useState('');
+  const [panCard, setPanCard] = useState('');
+  const [transactionId, setTransactionId] = useState('');
+
+  // UPI account for donations (QR code available)
+  const UPI_ID = 'wctrjadhav@okaxis';
+  const WHATSAPP_NUMBER = '9822068794'; // Wing Commander T.R. Jadhav
+  const CONTACT_MOBILE = '9822057894';
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const amountNum = parseFloat(amount);
+    const requiresDocuments = amountNum > 5000;
+
+    // Validate amount
+    if (!amount || isNaN(amountNum) || amountNum <= 0) {
+      alert('कृपया वैध रक्कम प्रविष्ट करा');
+      return;
     }
-  ];
+
+    // Validate required fields
+    if (!donorName || !donorEmail || !donorPhone) {
+      alert('कृपया सर्व आवश्यक माहिती भरा');
+      return;
+    }
+
+    // Validate PAN for donations above 5000
+    if (requiresDocuments && !panCard) {
+      alert('₹५००० पेक्षा जास्त रकमेसाठी PAN कार्ड आवश्यक आहे');
+      return;
+    }
+
+    const donationData = {
+      amount,
+      paymentMethod,
+      donorName,
+      donorEmail,
+      donorPhone,
+      ...(requiresDocuments && { panCard }),
+      ...(paymentMethod === 'upi' && { upiId: UPI_ID }),
+      ...(paymentMethod === 'cheque' && { chequeNumber, bankName }),
+    };
+
+    console.log('Donation data:', donationData);
+
+    // Handle donation submission based on payment method
+    if (paymentMethod === 'upi') {
+      // For web, we'll show UPI details and instructions
+      const upiUrl = `upi://pay?pa=${UPI_ID}&am=${amount}&cu=INR&tn=Donation%20to%20Maratha%20Samaj%20Pratishthan`;
+
+      // Try to open UPI app (works on mobile browsers)
+      if (typeof window !== 'undefined') {
+        window.location.href = upiUrl;
+
+        // Fallback: Show instructions
+        setTimeout(() => {
+          alert(`UPI ID: ${UPI_ID}\nरक्कम: ₹${amount}\n\nकृपया आपल्या UPI ऍपमध्ये ही माहिती वापरून पेमेंट करा.`);
+        }, 1000);
+      }
+    } else if (paymentMethod === 'cheque') {
+      if (!chequeNumber || !bankName) {
+        alert('कृपया चेक/DD क्रमांक आणि बँकेचे नाव भरा');
+        return;
+      }
+      alert('आपल्या सहयोगाबद्दल धन्यवाद! कृपया चेक/DD पुढील पत्त्यावर पाठवा:\nमराठा समाज प्रतिष्ठान, छत्रपती संभाजीनगर, महाराष्ट्र');
+    } else if (paymentMethod === 'netbanking') {
+      alert('आपल्या सहयोगाबद्दल धन्यवाद! कृपया हस्तांतरण पूर्ण करा आणि आम्हाला व्यवहार ID पाठवा.');
+    }
+  };
+
+  const amountNum = parseFloat(amount || '0');
+  const requiresPan = amountNum > 5000;
 
   return (
     <Layout>
@@ -51,62 +92,716 @@ export default function Donations() {
       <section className="ul-breadcrumb">
         <div className="ul-container">
           <div className="ul-breadcrumb-wrapper">
-            <h1 className="ul-breadcrumb-title">Donations</h1>
+            <h1 className="ul-breadcrumb-title marathi-heading">सहयोग करा</h1>
             <nav className="ul-breadcrumb-nav">
-              <a href="/">Home</a>
+              <a href="/">मुख्यपृष्ठ</a>
               <span>/</span>
-              <span>Donations</span>
+              <span>सहयोग</span>
             </nav>
           </div>
         </div>
       </section>
 
-      {/* Donations Content */}
-      <section className="ul-Donations-page ul-section-spacing">
+      {/* Donation Form Section */}
+      <section className="ul-section-spacing" style={{ backgroundColor: '#F5F5F5', padding: '40px 0' }}>
         <div className="ul-container">
-          <div className="ul-section-heading text-center">
-            <span className="ul-section-sub-title">Help & Donate</span>
-            <h2 className="ul-section-title">Support Our Causes</h2>
-            <p className="ul-section-descr">
-              Your Donations help us make a real difference in people's lives. Choose a cause that matters to you.
+          <div className="row justify-content-center">
+            {/* Donation Form */}
+            <div className="col-lg-8 col-md-10 col-12 mb-4">
+              <div style={{
+                backgroundColor: '#FFF',
+                padding: '32px',
+                borderRadius: '12px',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.1)'
+              }}>
+                <h2 className="marathi-heading" style={{
+                  fontSize: 'clamp(24px, 2vw, 32px)',
+                  fontWeight: 'bold',
+                  color: '#000',
+                  marginBottom: '24px',
+                  padding: '10px 0'
+                }}>
+                  सहयोग करा
+                </h2>
+
+                <form onSubmit={handleSubmit}>
+                  {/* Amount Input */}
+                  <div style={{ marginBottom: '24px' }}>
+                    <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px' }}>
+                      देणगी रक्कम (₹) *
+                    </label>
+                    <input
+                      type="number"
+                      placeholder="उदा: 1000"
+                      value={amount}
+                      onChange={(e) => setAmount(e.target.value)}
+                      required
+                      min="1"
+                      step="1"
+                      style={{
+                        width: '100%',
+                        border: '2px solid #E5E5E5',
+                        borderRadius: '8px',
+                        padding: '14px',
+                        fontSize: '16px',
+                        backgroundColor: '#FFF'
+                      }}
+                    />
+                    <p style={{
+                      fontSize: '12px',
+                      color: '#999',
+                      marginTop: '6px',
+                      fontStyle: 'italic'
+                    }}>
+                      कृपया आपली इच्छित देणगी रक्कम प्रविष्ट करा
             </p>
           </div>
 
-          <div className="row">
-            {Donations.map((Donation) => (
-              <div key={Donation.id} className="col-lg-6 col-md-6 mb-4">
-                <div className="ul-Donation-card">
-                  <div className="ul-Donation-image">
-                    <Image 
-                      src={Donation.image} 
-                      alt={Donation.title}
-                      width={400}
-                      height={300}
+                  {/* Donor Information */}
+                  <div style={{ marginBottom: '24px' }}>
+                    <h3 className="marathi-heading" style={{
+                      fontSize: '18px',
+                      fontWeight: 'bold',
+                      color: '#000',
+                      marginBottom: '16px'
+                    }}>
+                      दात्याची माहिती
+                    </h3>
+                    <input
+                      type="text"
+                      placeholder="नाव *"
+                      value={donorName}
+                      onChange={(e) => setDonorName(e.target.value)}
+                      required
+                      style={{
+                        width: '100%',
+                        border: '2px solid #E5E5E5',
+                        borderRadius: '8px',
+                        padding: '14px',
+                        fontSize: '16px',
+                        marginBottom: '12px',
+                        backgroundColor: '#FFF'
+                      }}
                     />
-                    <span className="ul-Donation-tag">{Donation.tag}</span>
+                    <input
+                      type="email"
+                      placeholder="ईमेल *"
+                      value={donorEmail}
+                      onChange={(e) => setDonorEmail(e.target.value)}
+                      required
+                      style={{
+                        width: '100%',
+                        border: '2px solid #E5E5E5',
+                        borderRadius: '8px',
+                        padding: '14px',
+                        fontSize: '16px',
+                        marginBottom: '12px',
+                        backgroundColor: '#FFF'
+                      }}
+                    />
+                    <input
+                      type="tel"
+                      placeholder="मोबाइल नंबर *"
+                      value={donorPhone}
+                      onChange={(e) => setDonorPhone(e.target.value)}
+                      required
+                      style={{
+                        width: '100%',
+                        border: '2px solid #E5E5E5',
+                        borderRadius: '8px',
+                        padding: '14px',
+                        fontSize: '16px',
+                        backgroundColor: '#FFF'
+                      }}
+                    />
                   </div>
-                  <div className="ul-Donation-content">
-                    <div className="ul-Donation-progress">
-                      <div className="ul-progress-bar">
-                        <div 
-                          className="ul-progress-fill" 
-                          style={{ width: `${Donation.progress}%` }}
-                        ></div>
-                      </div>
-                      <div className="ul-Donation-stats">
-                        <span>Raised: {Donation.raised}</span>
-                        <span>Goal: {Donation.goal}</span>
+
+                  {/* PAN Card - Required for donations above ₹5000 */}
+                  {requiresPan && (
+                    <div style={{ marginBottom: '24px' }}>
+                      <h3 className="marathi-heading" style={{
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        color: '#000',
+                        marginBottom: '16px'
+                      }}>
+                        PAN कार्ड माहिती
+                      </h3>
+                      <input
+                        type="text"
+                        placeholder="PAN कार्ड क्रमांक *"
+                        value={panCard}
+                        onChange={(e) => setPanCard(e.target.value.toUpperCase())}
+                        maxLength={10}
+                        required
+                        style={{
+                          width: '100%',
+                          border: '2px solid #E5E5E5',
+                          borderRadius: '8px',
+                          padding: '14px',
+                          fontSize: '16px',
+                          marginBottom: '12px',
+                          backgroundColor: '#FFF',
+                          textTransform: 'uppercase'
+                        }}
+                      />
+                      <p style={{
+                        fontSize: '14px',
+                        color: '#666',
+                        fontStyle: 'italic',
+                        marginTop: '8px'
+                      }}>
+                        ₹५००० पेक्षा जास्त रकमेसाठी PAN कार्ड आयकर नियमांनुसार अनिवार्य आहे.
+                      </p>
+                    </div>
+                  )}
+
+                  {/* Payment Method Selection */}
+                  <div style={{ marginBottom: '24px' }}>
+                    <h3 className="marathi-heading" style={{
+                      fontSize: '18px',
+                      fontWeight: 'bold',
+                      color: '#000',
+                      marginBottom: '16px'
+                    }}>
+                      पेमेंट पद्धत निवडा
+                    </h3>
+                    <div style={{
+                      display: 'flex',
+                      flexWrap: 'wrap',
+                      gap: '12px'
+                    }}>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('upi')}
+                        style={{
+                          flex: '1',
+                          minWidth: '30%',
+                          padding: '14px 16px',
+                          borderRadius: '8px',
+                          border: `2px solid ${paymentMethod === 'upi' ? 'var(--ul-primary)' : '#E5E5E5'}`,
+                          backgroundColor: paymentMethod === 'upi' ? 'var(--ul-c4)' : '#FFF',
+                          color: paymentMethod === 'upi' ? 'var(--ul-primary)' : '#333',
+                          fontSize: '15px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease'
+                        }}
+                      >
+                        UPI
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('cheque')}
+                        style={{
+                          flex: '1',
+                          minWidth: '30%',
+                          padding: '14px 16px',
+                          borderRadius: '8px',
+                          border: `2px solid ${paymentMethod === 'cheque' ? 'var(--ul-primary)' : '#E5E5E5'}`,
+                          backgroundColor: paymentMethod === 'cheque' ? 'var(--ul-c4)' : '#FFF',
+                          color: paymentMethod === 'cheque' ? 'var(--ul-primary)' : '#333',
+                          fontSize: '15px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease'
+                        }}
+                      >
+                        चेक/DD
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => setPaymentMethod('netbanking')}
+                        style={{
+                          flex: '1',
+                          minWidth: '30%',
+                          padding: '14px 16px',
+                          borderRadius: '8px',
+                          border: `2px solid ${paymentMethod === 'netbanking' ? 'var(--ul-primary)' : '#E5E5E5'}`,
+                          backgroundColor: paymentMethod === 'netbanking' ? 'var(--ul-c4)' : '#FFF',
+                          color: paymentMethod === 'netbanking' ? 'var(--ul-primary)' : '#333',
+                          fontSize: '15px',
+                          fontWeight: '600',
+                          cursor: 'pointer',
+                          transition: 'all 0.3s ease'
+                        }}
+                      >
+                        नेट बँकिंग
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Payment Method Specific Fields */}
+                  {paymentMethod === 'upi' && (
+                    <div style={{
+                      marginBottom: '24px',
+                      backgroundColor: '#F9F9F9',
+                      padding: '16px',
+                      borderRadius: '8px',
+                      border: '2px solid var(--ul-c4)'
+                    }}>
+                      <h3 className="marathi-heading" style={{
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        color: '#000',
+                        marginBottom: '12px'
+                      }}>
+                        UPI पेमेंट
+                      </h3>
+                      <p style={{ fontSize: '14px', color: '#666', marginBottom: '8px' }}>पेमेंट करा:</p>
+                      <p style={{
+                        fontSize: '20px',
+                        color: 'var(--ul-primary)',
+                        fontWeight: 'bold',
+                        letterSpacing: '0.5px',
+                        marginBottom: '8px'
+                      }}>
+                        {UPI_ID}
+                      </p>
+                      <p style={{
+                        fontSize: '16px',
+                        color: '#333',
+                        fontWeight: '600',
+                        marginBottom: '12px'
+                      }}>
+                        रक्कम: ₹{amount || '0'}
+                      </p>
+                      <p style={{
+                        fontSize: '14px',
+                        color: '#666',
+                        fontStyle: 'italic',
+                        marginBottom: '12px'
+                      }}>
+                        "सहयोग करा" बटणावर क्लिक करून आपल्या UPI ऍपमध्ये पेमेंट पूर्ण करा किंवा QR कोड स्कॅन करा.
+                      </p>
+                      <div style={{
+                        backgroundColor: '#E8F5E9',
+                        padding: '12px',
+                        borderRadius: '6px',
+                        border: '1px solid #4CAF50',
+                        marginTop: '12px'
+                      }}>
+                        <p style={{ fontSize: '13px', color: '#2E7D32', margin: 0, fontWeight: '600' }}>
+                          देणगी पाठवल्यानंतर, देणगी रकमेचा स्क्रीनशॉट आपल्या नावासहित WhatsApp वर पाठवा:
+                        </p>
+                        <p style={{ fontSize: '14px', color: 'var(--ul-primary)', margin: '4px 0 0 0', fontWeight: 'bold' }}>
+                          {WHATSAPP_NUMBER} (विंग कमांडर टी. आर. जाधव)
+                        </p>
                       </div>
                     </div>
-                    <h3 className="ul-Donation-title">{Donation.title}</h3>
-                    <p className="ul-Donation-description">{Donation.description}</p>
-                    <a href="/Donation-details" className="ul-btn">
-                      Donate Now <i className="flaticon-up-right-arrow"></i>
-                    </a>
+                  )}
+
+                  {paymentMethod === 'cheque' && (
+                    <div style={{ marginBottom: '24px' }}>
+                      <h3 className="marathi-heading" style={{
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        color: '#000',
+                        marginBottom: '16px'
+                      }}>
+                        चेक/DD माहिती
+                      </h3>
+
+                      {/* Bank Account Details */}
+                      <div style={{
+                        backgroundColor: '#F9F9F9',
+                        padding: '16px',
+                        borderRadius: '8px',
+                        marginBottom: '20px',
+                        border: '2px solid var(--ul-c4)'
+                      }}>
+                        <h4 className="marathi-heading" style={{
+                          fontSize: '16px',
+                          fontWeight: 'bold',
+                          color: '#000',
+                          marginBottom: '12px'
+                        }}>
+                          बँक खाते माहिती
+                        </h4>
+                        <div style={{ gap: '8px', display: 'flex', flexDirection: 'column' }}>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
+                            <span style={{ fontSize: '14px', color: '#666', fontWeight: '600' }}>खातेधारक नाव:</span>
+                            <span style={{ fontSize: '14px', color: '#000', fontWeight: '600' }}>मराठा समाज प्रतिष्ठान</span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
+                            <span style={{ fontSize: '14px', color: '#666', fontWeight: '600' }}>खाते क्रमांक:</span>
+                            <span style={{ fontSize: '14px', color: '#000', fontWeight: '600', fontFamily: 'monospace' }}>80087057609</span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
+                            <span style={{ fontSize: '14px', color: '#666', fontWeight: '600' }}>IFSC कोड:</span>
+                            <span style={{ fontSize: '14px', color: 'var(--ul-primary)', fontWeight: 'bold', fontFamily: 'monospace' }}>MAHG0005129</span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0', borderBottom: '1px solid #E5E5E5' }}>
+                            <span style={{ fontSize: '14px', color: '#666', fontWeight: '600' }}>बँकेचे नाव:</span>
+                            <span style={{ fontSize: '14px', color: '#000', fontWeight: '600' }}>महाराष्ट्र ग्रामीण बँक</span>
+                          </div>
+                          <div style={{ display: 'flex', justifyContent: 'space-between', padding: '8px 0' }}>
+                            <span style={{ fontSize: '14px', color: '#666', fontWeight: '600' }}>शाखा:</span>
+                            <span style={{ fontSize: '14px', color: '#000', fontWeight: '600' }}>समर्थ नगर, छत्रपती संभाजीनगर</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Form Fields */}
+                      <div style={{ marginBottom: '16px' }}>
+                        <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px' }}>
+                          देणगी रक्कम (₹) *
+                        </label>
+                        <input
+                          type="number"
+                          placeholder="उदा: 1000"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          required
+                          min="1"
+                          step="1"
+                          style={{
+                            width: '100%',
+                            border: '2px solid #E5E5E5',
+                            borderRadius: '8px',
+                            padding: '14px',
+                            fontSize: '16px',
+                            marginBottom: '12px',
+                            backgroundColor: '#FFF'
+                          }}
+                        />
+                      </div>
+
+                      <div style={{ marginBottom: '16px' }}>
+                        <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px' }}>
+                          चेक/DD क्रमांक *
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="उदा: 123456"
+                          value={chequeNumber}
+                          onChange={(e) => setChequeNumber(e.target.value)}
+                          required
+                          style={{
+                            width: '100%',
+                            border: '2px solid #E5E5E5',
+                            borderRadius: '8px',
+                            padding: '14px',
+                            fontSize: '16px',
+                            backgroundColor: '#FFF'
+                          }}
+                        />
+                      </div>
+
+                      <div style={{ marginBottom: '16px' }}>
+                        <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px' }}>
+                          बँकेचे नाव *
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="उदा: State Bank of India"
+                          value={bankName}
+                          onChange={(e) => setBankName(e.target.value)}
+                          required
+                          style={{
+                            width: '100%',
+                            border: '2px solid #E5E5E5',
+                            borderRadius: '8px',
+                            padding: '14px',
+                            fontSize: '16px',
+                            backgroundColor: '#FFF'
+                          }}
+                        />
+                      </div>
+
+                      {/* Instructions */}
+                      <div style={{
+                        backgroundColor: '#FFF9E6',
+                        padding: '16px',
+                        borderRadius: '8px',
+                        border: '1px solid #FFE082',
+                        marginTop: '16px'
+                      }}>
+                        <h4 className="marathi-heading" style={{
+                          fontSize: '15px',
+                          fontWeight: 'bold',
+                          color: '#E65100',
+                          marginBottom: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}>
+                          महत्वाची सूचना:
+                        </h4>
+                        <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '14px', color: '#666', lineHeight: '1.8' }}>
+                          <li style={{ marginBottom: '8px' }}>
+                            कृपया चेक/DD "मराठा समाज प्रतिष्ठान" या नावाने लिहा
+                          </li>
+                          <li style={{ marginBottom: '8px' }}>
+                            चेक/DD मध्ये रक्कम: <strong style={{ color: 'var(--ul-primary)' }}>₹{amount || '0'}</strong>
+                          </li>
+                          <li style={{ marginBottom: '8px' }}>
+                            चेक/DD पाठवण्याचा पत्ता:
+                            <br />
+                            <strong style={{ color: '#000', display: 'block', marginTop: '4px' }}>
+                              मराठा समाज प्रतिष्ठान<br />
+                              समर्थ नगर, छत्रपती संभाजीनगर,<br />
+                              महाराष्ट्र
+                            </strong>
+                          </li>
+                          <li style={{ marginBottom: '8px' }}>
+                            देणगी पाठवल्यानंतर, देणगी रकमेचा स्क्रीनशॉट आपल्या नावासहित WhatsApp वर पाठवा:
+                            <br />
+                            <strong style={{ color: 'var(--ul-primary)', display: 'block', marginTop: '4px', fontSize: '16px' }}>
+                              {WHATSAPP_NUMBER} (विंग कमांडर टी. आर. जाधव)
+                            </strong>
+                          </li>
+                          <li style={{ marginBottom: '0' }}>
+                            संपर्क मोबाइल: <strong>{CONTACT_MOBILE}</strong>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+
+                  {paymentMethod === 'netbanking' && (
+                    <div style={{ marginBottom: '24px' }}>
+                      <h3 className="marathi-heading" style={{
+                        fontSize: '18px',
+                        fontWeight: 'bold',
+                        color: '#000',
+                        marginBottom: '16px'
+                      }}>
+                        नेट बँकिंग माहिती
+                      </h3>
+
+                      {/* Amount Input */}
+                      <div style={{ marginBottom: '20px' }}>
+                        <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px' }}>
+                          देणगी रक्कम (₹) *
+                        </label>
+                        <input
+                          type="number"
+                          placeholder="उदा: 1000"
+                          value={amount}
+                          onChange={(e) => setAmount(e.target.value)}
+                          required
+                          min="1"
+                          step="1"
+                          style={{
+                            width: '100%',
+                            border: '2px solid #E5E5E5',
+                            borderRadius: '8px',
+                            padding: '14px',
+                            fontSize: '16px',
+                            backgroundColor: '#FFF'
+                          }}
+                        />
+                      </div>
+
+                      {/* Bank Account Details */}
+                      <div style={{
+                        backgroundColor: '#F9F9F9',
+                        padding: '20px',
+                        borderRadius: '8px',
+                        marginBottom: '20px',
+                        border: '2px solid var(--ul-c4)'
+                      }}>
+                        <h4 className="marathi-heading" style={{
+                          fontSize: '16px',
+                          fontWeight: 'bold',
+                          color: '#000',
+                          marginBottom: '16px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}>
+                          बँक खाते माहिती
+                        </h4>
+                        <div style={{ gap: '12px', display: 'flex', flexDirection: 'column' }}>
+                          <div style={{
+                            backgroundColor: '#FFF',
+                            padding: '12px',
+                            borderRadius: '6px',
+                            border: '1px solid #E5E5E5'
+                          }}>
+                            <div style={{ fontSize: '12px', color: '#999', marginBottom: '4px' }}>खातेधारक नाव</div>
+                            <div style={{ fontSize: '16px', fontWeight: 'bold', color: '#000' }}>मराठा समाज प्रतिष्ठान</div>
+                          </div>
+                          <div style={{
+                            backgroundColor: '#FFF',
+                            padding: '12px',
+                            borderRadius: '6px',
+                            border: '1px solid #E5E5E5'
+                          }}>
+                            <div style={{ fontSize: '12px', color: '#999', marginBottom: '4px' }}>खाते क्रमांक</div>
+                            <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--ul-primary)', fontFamily: 'monospace', letterSpacing: '1px' }}>
+                              80087057609
+                            </div>
+                          </div>
+                          <div style={{
+                            backgroundColor: '#FFF',
+                            padding: '12px',
+                            borderRadius: '6px',
+                            border: '1px solid #E5E5E5'
+                          }}>
+                            <div style={{ fontSize: '12px', color: '#999', marginBottom: '4px' }}>IFSC कोड</div>
+                            <div style={{ fontSize: '18px', fontWeight: 'bold', color: 'var(--ul-primary)', fontFamily: 'monospace', letterSpacing: '1px' }}>
+                              MAHG0005129
+                            </div>
+                          </div>
+                          <div style={{
+                            backgroundColor: '#FFF',
+                            padding: '12px',
+                            borderRadius: '6px',
+                            border: '1px solid #E5E5E5'
+                          }}>
+                            <div style={{ fontSize: '12px', color: '#999', marginBottom: '4px' }}>बँकेचे नाव</div>
+                            <div style={{ fontSize: '16px', fontWeight: '600', color: '#000' }}>महाराष्ट्र ग्रामीण बँक</div>
+                          </div>
+                          <div style={{
+                            backgroundColor: '#FFF',
+                            padding: '12px',
+                            borderRadius: '6px',
+                            border: '1px solid #E5E5E5'
+                          }}>
+                            <div style={{ fontSize: '12px', color: '#999', marginBottom: '4px' }}>शाखा</div>
+                            <div style={{ fontSize: '16px', fontWeight: '600', color: '#000' }}>समर्थ नगर, छत्रपती संभाजीनगर, महाराष्ट्र</div>
+                          </div>
+                          <div style={{
+                            backgroundColor: '#E8F5E9',
+                            padding: '12px',
+                            borderRadius: '6px',
+                            border: '1px solid #4CAF50'
+                          }}>
+                            <div style={{ fontSize: '12px', color: '#2E7D32', marginBottom: '4px', fontWeight: '600' }}>हस्तांतरण रक्कम</div>
+                            <div style={{ fontSize: '20px', fontWeight: 'bold', color: '#1B5E20' }}>
+                              ₹{amount || '0'}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Step-by-step Instructions */}
+                      <div style={{
+                        backgroundColor: '#E3F2FD',
+                        padding: '16px',
+                        borderRadius: '8px',
+                        border: '1px solid #90CAF9',
+                        marginBottom: '16px'
+                      }}>
+                        <h4 className="marathi-heading" style={{
+                          fontSize: '15px',
+                          fontWeight: 'bold',
+                          color: '#1565C0',
+                          marginBottom: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}>
+                          हस्तांतरण करण्याची पायऱ्या:
+                        </h4>
+                        <ol style={{ margin: 0, paddingLeft: '20px', fontSize: '14px', color: '#424242', lineHeight: '1.8' }}>
+                          <li style={{ marginBottom: '8px' }}>
+                            आपल्या बँकेच्या नेट बँकिंग पोर्टलवर लॉग इन करा
+                          </li>
+                          <li style={{ marginBottom: '8px' }}>
+                            "Fund Transfer" किंवा "NEFT/RTGS" पर्याय निवडा
+                          </li>
+                          <li style={{ marginBottom: '8px' }}>
+                            वरील बँक खाते माहिती प्रविष्ट करा (खाते क्रमांक, IFSC कोड)
+                          </li>
+                          <li style={{ marginBottom: '8px' }}>
+                            रक्कम: <strong style={{ color: 'var(--ul-primary)' }}>₹{amount || '0'}</strong> प्रविष्ट करा
+                          </li>
+                          <li style={{ marginBottom: '0' }}>
+                            व्यवहार पूर्ण झाल्यानंतर व्यवहार ID/Reference Number नोंदवून ठेवा
+                          </li>
+                        </ol>
+                      </div>
+
+                      {/* Important Notes */}
+                      <div style={{
+                        backgroundColor: '#FFF9E6',
+                        padding: '16px',
+                        borderRadius: '8px',
+                        border: '1px solid #FFE082'
+                      }}>
+                        <h4 className="marathi-heading" style={{
+                          fontSize: '15px',
+                          fontWeight: 'bold',
+                          color: '#E65100',
+                          marginBottom: '12px',
+                          display: 'flex',
+                          alignItems: 'center',
+                          gap: '8px'
+                        }}>
+                          महत्वाची सूचना:
+                        </h4>
+                        <ul style={{ margin: 0, paddingLeft: '20px', fontSize: '14px', color: '#666', lineHeight: '1.8' }}>
+                          <li style={{ marginBottom: '8px' }}>
+                            कृपया IFSC कोड आणि खाते क्रमांक अचूक प्रविष्ट करा
+                          </li>
+                          <li style={{ marginBottom: '8px' }}>
+                            व्यवहार पूर्ण झाल्यानंतर व्यवहार ID/Reference Number आणि स्क्रीनशॉट आपल्या नावासहित WhatsApp वर पाठवा:
+                            <br />
+                            <strong style={{ color: 'var(--ul-primary)', display: 'block', marginTop: '4px', fontSize: '16px' }}>
+                              {WHATSAPP_NUMBER} (विंग कमांडर टी. आर. जाधव)
+                            </strong>
+                          </li>
+                          <li style={{ marginBottom: '8px' }}>
+                            NEFT व्यवहार सामान्यतः 2-4 तासांत पूर्ण होतात
+                          </li>
+                          <li style={{ marginBottom: '0' }}>
+                            RTGS व्यवहार ₹2 लाख पेक्षा जास्त रकमेसाठी वापरा (सामान्यतः त्वरित)
+                          </li>
+                        </ul>
+                      </div>
+
+                      {/* Transaction ID Field (Optional) */}
+                      <div style={{ marginTop: '16px' }}>
+                        <label style={{ display: 'block', fontSize: '14px', fontWeight: '600', color: '#333', marginBottom: '8px' }}>
+                          व्यवहार ID/Reference Number (पूर्ण झाल्यानंतर)
+                        </label>
+                        <input
+                          type="text"
+                          placeholder="उदा: NEFT123456789"
+                          value={transactionId}
+                          onChange={(e) => setTransactionId(e.target.value)}
+                          style={{
+                            width: '100%',
+                            border: '2px solid #E5E5E5',
+                            borderRadius: '8px',
+                            padding: '14px',
+                            fontSize: '16px',
+                            backgroundColor: '#FFF'
+                          }}
+                        />
+                        <p style={{
+                          fontSize: '12px',
+                          color: '#999',
+                          marginTop: '6px',
+                          fontStyle: 'italic'
+                        }}>
+                          * हे क्षेत्र वैकल्पिक आहे. व्यवहार पूर्ण झाल्यानंतर भरा.
+                        </p>
                   </div>
                 </div>
+                  )}
+
+                  {/* Submit Button */}
+                  <button
+                    type="submit"
+                    className="ul-btn"
+                    style={{
+                      width: '100%',
+                      marginTop: '8px',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                    }}
+                  >
+                    <i className="flaticon-fast-forward-double-right-arrows-symbol"></i>
+                    सहयोग करा
+                  </button>
+                </form>
               </div>
-            ))}
+            </div>
+
+           
           </div>
         </div>
       </section>

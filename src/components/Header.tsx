@@ -30,7 +30,7 @@ export default function Header() {
                 <a href="#about">आमच्याबद्दल</a>
                 <a href="#programs">उपक्रम</a>
                 <a href="#events">कार्यक्रम</a>
-                <a href="#team">संघ</a>
+                <a href="#team">कार्यकारी मंडळ</a>
                 <a href="#contact">संपर्क</a>
               </nav>
             </div>

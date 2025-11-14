@@ -30,7 +30,7 @@ export default function Team() {
     {
       id: 4,
       image: '/assets/img/member-4.png',
-      name: 'श्री सुनील किर्डक',
+      name: 'श्री सुनील किर्दक',
       designation: 'सचिव',
     },
     {
@@ -43,6 +43,48 @@ export default function Team() {
       id: 6,
       image: '/assets/img/member-6.png',
       name: 'श्री सतीश तुपे',
+      designation: 'सचिव',
+    },
+    {
+      id:7,
+      image:'/assets/img/member-7.png',
+      name: 'डॉ. आर. एस. खिस्ते',
+      designation: 'सचिव',
+    },
+    {
+      id:8,
+      image:'/assets/img/member-8.png',
+      name: 'श्री बी. एस. खोसे',
+      designation: 'सचिव',
+    },
+    {
+      id:9,
+      image:'/assets/img/member-9.png',
+      name: 'श्री रोहित सूर्यवंशी',
+      designation: 'सचिव',
+    },
+    {
+      id:10,
+      image:'/assets/img/member-10.png',
+      name: 'श्री राजेश मोरे',
+      designation: 'सचिव',
+    },
+    {
+      id:11,
+      image:'/assets/img/member-11.png',
+      name: 'श्री प्रदीप पाटील',
+      designation: 'सचिव',
+    },
+    {
+      id:12,
+      image:'/assets/img/member-12.png',
+      name: 'श्री सुभाष शेलके',
+      designation: 'सचिव',
+    },
+    {
+      id:13,
+      image:'/assets/img/member-13.png',
+      name: 'श्री गिरीश एल. उबळे',
       designation: 'सचिव',
     },
   ];

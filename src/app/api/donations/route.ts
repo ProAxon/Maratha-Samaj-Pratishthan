@@ -12,6 +12,7 @@ export async function POST(request: NextRequest) {
       donorEmail,
       donorPhone,
       panCard,
+      aadharNumber,
       upiId,
       chequeNumber,
       bankName,
@@ -35,10 +36,37 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Validate PAN for donations above 5000
+    // Validate mobile number (must be exactly 10 digits)
+    const phoneDigits = donorPhone.replace(/\D/g, '');
+    if (phoneDigits.length !== 10) {
+      return NextResponse.json(
+        { error: 'मोबाइल नंबर नक्की 10 अंक असावा' },
+        { status: 400 }
+      );
+    }
+
+    // Validate PAN and Aadhar for donations above 5000
     if (amountNum > 5000 && !panCard) {
       return NextResponse.json(
         { error: '₹५००० पेक्षा जास्त रकमेसाठी PAN कार्ड आवश्यक आहे' },
+        { status: 400 }
+      );
+    }
+    if (amountNum > 5000 && panCard && panCard.length !== 10) {
+      return NextResponse.json(
+        { error: 'PAN कार्ड क्रमांक नक्की 10 अक्षर असावा' },
+        { status: 400 }
+      );
+    }
+    if (amountNum > 5000 && !aadharNumber) {
+      return NextResponse.json(
+        { error: '₹५००० पेक्षा जास्त रकमेसाठी आधार क्रमांक आवश्यक आहे' },
+        { status: 400 }
+      );
+    }
+    if (amountNum > 5000 && aadharNumber && aadharNumber.length !== 12) {
+      return NextResponse.json(
+        { error: 'आधार क्रमांक नक्की 12 अंक असावा' },
         { status: 400 }
       );
     }
@@ -59,8 +87,9 @@ export async function POST(request: NextRequest) {
         payment_method: paymentMethod,
         donor_name: donorName,
         donor_email: donorEmail,
-        donor_phone: donorPhone,
+        donor_phone: phoneDigits, // Use cleaned phone number (only digits)
         pan_card: panCard || null,
+        aadhar_number: aadharNumber || null,
         upi_id: upiId || null,
         cheque_number: chequeNumber || null,
         bank_name: bankName || null,

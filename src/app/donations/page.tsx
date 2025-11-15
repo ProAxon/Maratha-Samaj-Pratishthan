@@ -14,6 +14,7 @@ export default function Donations() {
   const [chequeNumber, setChequeNumber] = useState('');
   const [bankName, setBankName] = useState('');
   const [panCard, setPanCard] = useState('');
+  const [aadharNumber, setAadharNumber] = useState('');
   const [transactionId, setTransactionId] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [submitMessage, setSubmitMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
@@ -33,28 +34,51 @@ export default function Donations() {
 
     // Validate amount
     if (!amount || isNaN(amountNum) || amountNum <= 0) {
-      setSubmitMessage({ type: 'error', text: 'कृपया वैध रक्कम प्रविष्ट करा' });
+      alert('कृपया वैध रक्कम प्रविष्ट करा');
       setIsSubmitting(false);
       return;
     }
 
     // Validate required fields
     if (!donorName || !donorEmail || !donorPhone) {
-      setSubmitMessage({ type: 'error', text: 'कृपया सर्व आवश्यक माहिती भरा' });
+      alert('कृपया सर्व आवश्यक माहिती भरा');
       setIsSubmitting(false);
       return;
     }
 
-    // Validate PAN for donations above 5000
+    // Validate mobile number (must be exactly 10 digits)
+    const phoneDigits = donorPhone.replace(/\D/g, '');
+    if (phoneDigits.length !== 10) {
+      alert('मोबाइल नंबर नक्की 10 अंक असावा');
+      setIsSubmitting(false);
+      return;
+    }
+
+    // Validate PAN and Aadhar for donations above 5000
     if (requiresDocuments && !panCard) {
-      setSubmitMessage({ type: 'error', text: '₹५००० पेक्षा जास्त रकमेसाठी PAN कार्ड आवश्यक आहे' });
+      alert('₹५००० पेक्षा जास्त रकमेसाठी PAN कार्ड आवश्यक आहे');
+      setIsSubmitting(false);
+      return;
+    }
+    if (requiresDocuments && panCard && panCard.length !== 10) {
+      alert('PAN कार्ड क्रमांक नक्की 10 अक्षर असावा');
+      setIsSubmitting(false);
+      return;
+    }
+    if (requiresDocuments && !aadharNumber) {
+      alert('₹५००० पेक्षा जास्त रकमेसाठी आधार क्रमांक आवश्यक आहे');
+      setIsSubmitting(false);
+      return;
+    }
+    if (requiresDocuments && aadharNumber && aadharNumber.length !== 12) {
+      alert('आधार क्रमांक नक्की 12 अंक असावा');
       setIsSubmitting(false);
       return;
     }
 
     // Validate payment method specific fields
     if (paymentMethod === 'cheque' && (!chequeNumber || !bankName)) {
-      setSubmitMessage({ type: 'error', text: 'कृपया चेक/DD क्रमांक आणि बँकेचे नाव भरा' });
+      alert('कृपया चेक/DD क्रमांक आणि बँकेचे नाव भरा');
       setIsSubmitting(false);
       return;
     }
@@ -64,8 +88,9 @@ export default function Donations() {
       paymentMethod,
       donorName,
       donorEmail,
-      donorPhone,
+      donorPhone: phoneDigits, // Use cleaned phone number (only digits)
       ...(requiresDocuments && { panCard }),
+      ...(requiresDocuments && aadharNumber && { aadharNumber }),
       ...(paymentMethod === 'upi' && { upiId: UPI_ID }),
       ...(paymentMethod === 'cheque' && { chequeNumber, bankName }),
       ...(paymentMethod === 'netbanking' && transactionId && { transactionId }),
@@ -84,7 +109,7 @@ export default function Donations() {
       const result = await response.json();
 
       if (!response.ok) {
-        setSubmitMessage({ type: 'error', text: result.error || 'त्रुटी आली. कृपया पुन्हा प्रयत्न करा.' });
+        alert(result.error || 'त्रुटी आली. कृपया पुन्हा प्रयत्न करा.');
         setIsSubmitting(false);
         return;
       }
@@ -120,6 +145,7 @@ export default function Donations() {
         setDonorEmail('');
         setDonorPhone('');
         setPanCard('');
+        setAadharNumber('');
         setChequeNumber('');
         setBankName('');
         setAmount('');
@@ -129,7 +155,7 @@ export default function Donations() {
 
     } catch (error) {
       console.error('Error submitting donation:', error);
-      setSubmitMessage({ type: 'error', text: 'नेटवर्क त्रुटी. कृपया पुन्हा प्रयत्न करा.' });
+      alert('नेटवर्क त्रुटी. कृपया पुन्हा प्रयत्न करा.');
     } finally {
       setIsSubmitting(false);
     }
@@ -253,9 +279,15 @@ export default function Donations() {
                     />
                     <input
                       type="tel"
-                      placeholder="मोबाइल नंबर *"
+                      placeholder="मोबाइल नंबर (10 अंक) *"
                       value={donorPhone}
-                      onChange={(e) => setDonorPhone(e.target.value)}
+                      onChange={(e) => {
+                        const value = e.target.value.replace(/\D/g, ''); // Only numbers
+                        if (value.length <= 10) {
+                          setDonorPhone(value);
+                        }
+                      }}
+                      maxLength={10}
                       required
                       style={{
                         width: '100%',
@@ -268,7 +300,7 @@ export default function Donations() {
                     />
                   </div>
 
-                  {/* PAN Card - Required for donations above ₹5000 */}
+                  {/* PAN Card and Aadhar - Required for donations above ₹5000 */}
                   {requiresPan && (
                     <div style={{ marginBottom: '24px' }}>
                       <h3 className="marathi-heading" style={{
@@ -277,11 +309,11 @@ export default function Donations() {
                         color: '#000',
                         marginBottom: '16px'
                       }}>
-                        PAN कार्ड माहिती
+                        PAN कार्ड आणि आधार माहिती
                       </h3>
                       <input
                         type="text"
-                        placeholder="PAN कार्ड क्रमांक *"
+                        placeholder="PAN कार्ड क्रमांक (10 अक्षर) *"
                         value={panCard}
                         onChange={(e) => setPanCard(e.target.value.toUpperCase())}
                         maxLength={10}
@@ -297,13 +329,35 @@ export default function Donations() {
                           textTransform: 'uppercase'
                         }}
                       />
+                      <input
+                        type="text"
+                        placeholder="आधार क्रमांक (12 अंक) *"
+                        value={aadharNumber}
+                        onChange={(e) => {
+                          const value = e.target.value.replace(/\D/g, ''); // Only numbers
+                          if (value.length <= 12) {
+                            setAadharNumber(value);
+                          }
+                        }}
+                        maxLength={12}
+                        required
+                        style={{
+                          width: '100%',
+                          border: '2px solid #E5E5E5',
+                          borderRadius: '8px',
+                          padding: '14px',
+                          fontSize: '16px',
+                          marginBottom: '12px',
+                          backgroundColor: '#FFF'
+                        }}
+                      />
                       <p style={{
                         fontSize: '14px',
                         color: '#666',
                         fontStyle: 'italic',
                         marginTop: '8px'
                       }}>
-                        ₹५००० पेक्षा जास्त रकमेसाठी PAN कार्ड आयकर नियमांनुसार अनिवार्य आहे.
+                        ₹५००० पेक्षा जास्त रकमेसाठी PAN कार्ड (10 अक्षर) आणि आधार क्रमांक (12 अंक) आयकर नियमांनुसार अनिवार्य आहे.
                       </p>
                     </div>
                   )}

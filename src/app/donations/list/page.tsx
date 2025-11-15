@@ -11,6 +11,7 @@ interface Donation {
   donor_email: string;
   donor_phone: string;
   pan_card: string | null;
+  aadhar_number: string | null;
   upi_id: string | null;
   cheque_number: string | null;
   bank_name: string | null;
@@ -313,6 +314,12 @@ export default function DonationsList() {
                           <div style={{ marginBottom: '8px' }}>
                             <span style={{ fontSize: '12px', color: '#999', display: 'block', marginBottom: '4px' }}>PAN:</span>
                             <span style={{ fontSize: '14px', color: '#333' }}>{donation.pan_card}</span>
+                          </div>
+                        )}
+                        {donation.aadhar_number && (
+                          <div style={{ marginBottom: '8px' }}>
+                            <span style={{ fontSize: '12px', color: '#999', display: 'block', marginBottom: '4px' }}>आधार:</span>
+                            <span style={{ fontSize: '14px', color: '#333' }}>{donation.aadhar_number}</span>
                           </div>
                         )}
                         <div>

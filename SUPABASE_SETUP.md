@@ -21,6 +21,7 @@ CREATE TABLE IF NOT EXISTS donations (
   donor_email TEXT NOT NULL,
   donor_phone TEXT NOT NULL,
   pan_card TEXT,
+  aadhar_number TEXT,
   upi_id TEXT,
   cheque_number TEXT,
   bank_name TEXT,

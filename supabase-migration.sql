@@ -10,6 +10,7 @@ CREATE TABLE IF NOT EXISTS donations (
   donor_email TEXT NOT NULL,
   donor_phone TEXT NOT NULL,
   pan_card TEXT,
+  aadhar_number TEXT,
   upi_id TEXT,
   cheque_number TEXT,
   bank_name TEXT,
@@ -50,4 +51,7 @@ CREATE TRIGGER update_donations_updated_at BEFORE UPDATE
 -- Allow anyone to read donations (or restrict to authenticated users)
 -- CREATE POLICY "Allow public read" ON donations
 --   FOR SELECT USING (true);
+
+-- If you already have the donations table and need to add the aadhar_number column:
+-- ALTER TABLE donations ADD COLUMN IF NOT EXISTS aadhar_number TEXT;
 

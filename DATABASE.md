@@ -32,6 +32,7 @@ Get these values from your Supabase project: Settings > API
 - `donor_email` - TEXT (donor's email)
 - `donor_phone` - TEXT (donor's phone number)
 - `pan_card` - TEXT (PAN card number, required for donations > ₹5000)
+- `aadhar_number` - TEXT (Aadhar card number, required for donations > ₹5000)
 - `upi_id` - TEXT (UPI ID, if payment method is UPI)
 - `cheque_number` - TEXT (cheque/DD number, if payment method is cheque)
 - `bank_name` - TEXT (bank name, if payment method is cheque)
@@ -55,6 +56,7 @@ Submit a new donation.
   "donorEmail": "john@example.com",
   "donorPhone": "1234567890",
   "panCard": "ABCDE1234F", // Optional, required if amount > 5000
+  "aadharNumber": "123456789012", // Optional, required if amount > 5000
   "upiId": "wctrjadhav@okaxis", // If payment method is UPI
   "chequeNumber": "123456", // If payment method is cheque
   "bankName": "State Bank of India" // If payment method is cheque
